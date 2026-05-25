@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/scripts/no-direct-db-push.js",
+        "windows": "node .github\\hooks\\scripts\\no-direct-db-push.js",
+        "timeout": 10
+      }
+    ]
+  }
+}

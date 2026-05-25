@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/scripts/destructive-command-blocker.js",
+        "windows": "node .github\\hooks\\scripts\\destructive-command-blocker.js",
+        "timeout": 10
+      }
+    ]
+  }
+}

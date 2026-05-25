@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "node .github/hooks/scripts/git-branch-guard.js",
+        "windows": "node .github\\hooks\\scripts\\git-branch-guard.js",
+        "timeout": 10
+      }
+    ]
+  }
+}
