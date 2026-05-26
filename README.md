@@ -4,6 +4,10 @@ A GitHub Copilot workspace template for Next.js App Router projects. Drop this i
 
 ---
 
+Also check out [Awsome Copilot](https://github.com/github/awesome-copilot) for more usefull copilot instructions for different languages 
+
+---
+
 ## What's included
 
 | Area                 | Description                                                                                                                                               |
