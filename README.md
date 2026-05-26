@@ -96,6 +96,120 @@ If you prefer to fill placeholders yourself, edit these files directly:
 
 ---
 
+## Reference files & coding standards
+
+The template uses a **two-layer reference system** that gives Copilot consistent, project-aware rules without repeating yourself across agents, skills, and prompts.
+
+### How it works
+
+```
+.github/instructions/references/
+├── react-best-practices.md          ← generic, technology-level rules
+├── nextjs-best-practices.md
+├── server-actions-best-practices.md
+├── api-route-best-practices.md
+├── db-best-practices.md
+├── accessibility-best-practices.md
+├── security-best-practices.md
+└── project-patterns.md              ← YOUR project-specific overrides (fill this in)
+```
+
+Every agent, skill, and prompt in this template is instructed to load the relevant generic reference **and** `project-patterns.md` before generating or reviewing code. When the two conflict, `project-patterns.md` wins.
+
+```
+Generic reference  →  provides the rule
+project-patterns.md  →  overrides or extends the rule for your project
+```
+
+### Generic reference files
+
+These files ship with the template and should not be edited. They encode battle-tested, technology-level conventions.
+
+| File                                                                                                   | What it governs                                                                                           |
+| ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| [`react-best-practices.md`](.github/instructions/references/react-best-practices.md)                   | Component design, state management, hooks, render performance, event handling                             |
+| [`nextjs-best-practices.md`](.github/instructions/references/nextjs-best-practices.md)                 | App Router layouts, data-fetching patterns, caching, middleware, routing conventions                      |
+| [`server-actions-best-practices.md`](.github/instructions/references/server-actions-best-practices.md) | `ActionResult<T>` return type, Zod validation, auth checks, cache invalidation, one-file-per-domain rule  |
+| [`api-route-best-practices.md`](.github/instructions/references/api-route-best-practices.md)           | When to use Route Handlers vs. Server Actions, request validation, response shaping, webhook verification |
+| [`db-best-practices.md`](.github/instructions/references/db-best-practices.md)                         | Prisma schema conventions, soft deletes, migration discipline, raw SQL policy, query helpers              |
+| [`accessibility-best-practices.md`](.github/instructions/references/accessibility-best-practices.md)   | WCAG 2.1 AA rules, semantic HTML, ARIA attributes, keyboard navigation, focus management                  |
+| [`security-best-practices.md`](.github/instructions/references/security-best-practices.md)             | OWASP Top 10, input sanitisation, secret handling, CSRF, rate limiting, secure headers                    |
+
+### `project-patterns.md` — the file you fill in
+
+[`.github/instructions/references/project-patterns.md`](.github/instructions/references/project-patterns.md) is the single most important file to customise. It ships with placeholder sections:
+
+| Section                         | What to add                                                                                                              |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Naming conventions**          | Model names (singular/plural), file naming rules, component export conventions                                           |
+| **Auth patterns**               | How your session helper is imported (`auth()`, `getServerSession()`), role-check utilities, where org scoping comes from |
+| **Feature flag patterns**       | Flag evaluation location, client vs. server exposure rules                                                               |
+| **Multi-tenancy / org scoping** | Which field scopes queries (`orgId`, `tenantId`), whether Prisma middleware enforces it                                  |
+| **Third-party integrations**    | Wrapper module locations for Stripe, Resend, S3, etc. so Copilot never calls SDKs directly                               |
+
+**Example — auth pattern entry:**
+
+```md
+## 2. Auth Patterns
+
+- Session is accessed via `auth()` imported from `@/lib/auth`.
+- Role check: call `requireRole(session, "ADMIN")` — it throws `UnauthorizedError` if the role doesn't match.
+- Every Server Action must call `auth()` as its first statement and return `{ success: false, error: "Unauthorized" }` if no session exists.
+- All database queries must include `userId: session.user.id` in the `where` clause — never trust a client-supplied ID.
+```
+
+Once filled in, every agent and skill will automatically apply these rules when generating or reviewing code for your project.
+
+### Scoped instructions (`applyTo`)
+
+Three instruction files use YAML frontmatter to auto-apply their rules to matching file paths — no manual loading required:
+
+| File                                                                                  | Auto-applied to                     |
+| ------------------------------------------------------------------------------------- | ----------------------------------- |
+| [`api-routes.instructions.md`](.github/instructions/api-routes.instructions.md)       | Every file under `app/api/**`       |
+| [`components-ui.instructions.md`](.github/instructions/components-ui.instructions.md) | Every file under `components/ui/**` |
+| [`lib-actions.instructions.md`](.github/instructions/lib-actions.instructions.md)     | Every file under `lib/actions/**`   |
+
+When you open or edit a file that matches one of these globs, Copilot loads the corresponding instruction set automatically. You can add more scoped instruction files following the same pattern:
+
+```md
+---
+applyTo: "**/hooks/**"
+---
+
+# Hook Rules
+
+...your rules...
+```
+
+### Setting up references for a new project
+
+Follow these steps once after cloning the template:
+
+1. **Fill `project-description.md`** — product name, glossary, feature areas, and business rules. This is loaded by every agent to understand domain vocabulary.
+
+2. **Fill `project-patterns.md`** — auth pattern, naming conventions, org scoping, and integrations. This overrides generic rules project-wide.
+
+3. **Update `copilot-instructions.md`** — replace `[PLACEHOLDER]` values for auth provider, email provider, payments, storage, and deployment platform. Update the tech stack section to match your actual stack.
+
+4. **Add new scoped instruction files** as your project grows — one per directory that has strong conventions (e.g. `hooks/`, `middleware/`, `emails/`).
+
+> **Tip:** Run `@agent Onboarding Agent` to have Copilot guide you through steps 1–3 automatically.
+
+### Override chain
+
+When Copilot makes a decision, it applies rules in this priority order (highest wins):
+
+```
+project-patterns.md
+  └─ overrides generic references (react, nextjs, db, etc.)
+       └─ overrides scoped instructions (api-routes, lib-actions, components-ui)
+```
+
+If `project-patterns.md` says "role checks use `requireRole()`" but a generic reference says "throw directly", the project pattern takes precedence.
+
+---
+
 ## Agents
 
 Invoke agents from Copilot chat with `@agent <Name>` or via the agent picker.
