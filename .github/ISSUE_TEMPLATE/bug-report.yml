@@ -1,0 +1,78 @@
+name: Bug report
+description: Something is broken or behaving unexpectedly.
+title: "bug: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Fill out every section — vague reports are hard to act on.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear, concise description of the bug.
+      placeholder: "When I click 'Save', the form submits but the record does not appear in the list."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: "The new record should appear at the top of the list immediately after saving."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Exact steps someone else can follow to see the bug.
+      placeholder: |
+        1. Go to the Alerts page
+        2. Click "New Alert"
+        3. Fill in name "CPU > 90%" and click Save
+        4. Observe the list — the new alert is missing
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: How often does this happen?
+      options:
+        - Always (100%)
+        - Usually (>50%)
+        - Sometimes (<50%)
+        - Rarely / cannot reproduce reliably
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Fill in what is relevant.
+      value: |
+        - Browser / OS:
+        - Node version:
+        - Deployment environment (local / staging / production):
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or screenshots
+      description: |
+        Paste browser console errors, server logs, or attach screenshots/recordings.
+        Drag files directly into this text area.
+      render: shell
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else that might help — related issues, recent deploys, feature flags enabled, etc.

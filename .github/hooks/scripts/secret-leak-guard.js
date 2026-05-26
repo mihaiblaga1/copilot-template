@@ -83,6 +83,16 @@ function isPlaceholder(value) {
 }
 
 // ---------------------------------------------------------------------------
+// Mask a secret value so it is identifiable but not fully exposed in logs
+// Shows the first 4 characters and the total length: e.g. "sk-l****[32]"
+// ---------------------------------------------------------------------------
+function maskValue(value) {
+  const preview = value.slice(0, 4);
+  const rest = value.length > 4 ? `****[${value.length}]` : "****";
+  return `${preview}${rest}`;
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 let raw = "";
@@ -115,18 +125,23 @@ process.stdin.on("end", () => {
     if (pattern.extractValue) {
       const value = pattern.extractValue(match);
       if (!value || isPlaceholder(value)) continue;
+      hits.push({ name: pattern.name, masked: maskValue(value) });
+    } else {
+      // Use the full regex match[0] as the found value
+      const value = match[0];
+      hits.push({ name: pattern.name, masked: maskValue(value) });
     }
-
-    hits.push(pattern.name);
   }
 
   if (hits.length === 0) {
     process.exit(0);
   }
 
+  const hitLines = hits.map((h) => `  • ${h.name}: ${h.masked}`).join("\n");
+
   // Secret detected — log to stderr and ask the user for permission
   process.stderr.write(
-    `[secret-leak-guard] Potential secret detected — pattern(s): ${hits.join("; ")}\n`,
+    `[secret-leak-guard] Potential secret(s) detected:\n${hitLines}\n`,
   );
 
   const output = {
@@ -134,8 +149,8 @@ process.stdin.on("end", () => {
       hookEventName: "PreToolUse",
       permissionDecision: "ask",
       permissionDecisionReason: [
-        `⚠️  Secret Leak Guard detected a potential secret in this tool call.`,
-        `Pattern(s) matched: ${hits.join("; ")}.`,
+        `⚠️  Secret Leak Guard detected potential secret(s) in this tool call:`,
+        hits.map((h) => `${h.name} (${h.masked})`).join(", ") + ".",
         "If this is a real secret, cancel and use an environment variable (e.g. process.env.MY_SECRET) instead.",
         "If this is a placeholder or example value, you can safely allow.",
       ].join(" "),

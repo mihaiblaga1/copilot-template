@@ -28,6 +28,20 @@ Determine whether the input is:
 - A **GitHub PR URL** → use `github/get_pull_request` to fetch metadata (title, description, base branch, head branch, diff URL).
 - A **local branch name** → run `git diff main...HEAD --stat` then `git diff main...HEAD` to produce the diff.
 
+**Load the PR template** — read [PULL_REQUEST_TEMPLATE.md](../PULL_REQUEST_TEMPLATE.md) so you know what a compliant PR description must contain. You will validate the actual PR description against this template in Step 1a below.
+
+#### Step 1a — Validate the PR Description
+
+Compare the PR's actual description against the template. Flag any of the following as a **Low** finding (use finding label `PR Description`):
+
+- The type-of-change checkbox section is entirely missing or unchecked
+- The "Description" section is blank or contains only the placeholder comment
+- The "How to test" section is missing or has fewer than one concrete step
+- The "Screenshots / recordings" section is absent when the diff contains changes to `.tsx` component files (UI changes require before/after evidence)
+- The self-review checklist is missing entirely
+
+Do not flag Low issues for partially completed checklists — only flag when a section is **completely absent** or **clearly unfilled** (still contains the placeholder comment text).
+
 Extract the list of changed files from the diff. Categorise each file into one or more domains:
 
 | File path pattern             | Domain(s)               |
