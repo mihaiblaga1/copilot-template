@@ -65,6 +65,12 @@ Ask the developer **all of the following questions in one message**. Wait for al
 
 7. What are the explicit non-goals of this product? (Things it deliberately will NOT do.)
    Example: "No mobile app", "No public API for external consumers", "No real-time collaboration"
+
+7b. Do you have any project-specific naming conventions? (If not, say "defaults".)
+    Examples:
+    - Database model names are singular PascalCase (User, Alert, Invoice).
+    - React component files match the exported name exactly (UserCard.tsx exports UserCard).
+    - Server Action files are kebab-case, one per domain (alert-rules.ts, billing.ts).
 ```
 
 ---
@@ -194,19 +200,32 @@ Find and replace every placeholder comment in `copilot-instructions.md`:
 
 Do not change any non-placeholder content.
 
+#### Step 7b — Fill `ISSUE_TEMPLATE/config.yml`
+
+Open `ISSUE_TEMPLATE/config.yml`. Replace the placeholder `url` with the project's GitHub Discussions URL:
+
+| Placeholder                | Replace with                                                                   |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| `[GITHUB_DISCUSSIONS_URL]` | `https://github.com/{org}/{repo}/discussions` (derive org/repo from Q1 or ask) |
+
+If the project does not use GitHub Discussions, set `blank_issues_enabled: true` and remove the `contact_links` section entirely.
+
 ---
 
 ### Step 8 — Fill `project-patterns.md`
 
 Open `instructions/references/project-patterns.md`. It contains placeholder sections for project-specific conventions. Fill in what is now known:
 
-- **Naming conventions**: derive from Q1, Q15 (domain concepts → type names, route names, action names)
+- **Naming conventions**: derive from Q7b (or use defaults: singular PascalCase models, kebab-case action files, component files match export name)
 - **Auth patterns**: derive from Q8 + Q9 (which session helper to use, how to get the current user, org scoping pattern)
 - **Multi-tenancy**: derive from Q16 + Q17 (which field to add to every query, where to enforce it)
 - **Feature flags**: leave as placeholder if no system was mentioned
 - **Integrations**: derive from Q19 (which SDK to use, how to initialise it)
 - **Testing patterns**: derive from Q14 (which test runner, which helpers)
 - **Other rules**: include each business rule from Q6
+- **Error handling & logging**: if an error reporting service was mentioned, document it; otherwise add `<!-- TODO: fill in -->`
+- **Toast & notification conventions**: write the defaults from `copilot-instructions.md` (Sonner, passive past tense, ConfirmDialog for destructive actions)
+- **DTO mapping conventions**: write the defaults (DTO types in `src/types/`, never return raw Prisma models)
 
 Leave sections that cannot be determined from the interview with a `<!-- TODO: fill in -->` comment.
 

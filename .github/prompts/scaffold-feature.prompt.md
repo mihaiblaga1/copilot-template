@@ -22,7 +22,7 @@ If no name was provided, ask before proceeding.
 Before creating any files, load the project's standards:
 
 - [project-description.md](../project-description.md) — domain vocabulary and feature areas (use correct domain terminology in names and comments)
-- [copilot-instructions.md](../.github/copilot-instructions.md) — project structure, mandatory patterns
+- [copilot-instructions.md](../copilot-instructions.md) — project structure, mandatory patterns
 - [project-patterns.md](../instructions/references/project-patterns.md) — project-specific overrides
 - [server-actions-best-practices.md](../instructions/references/server-actions-best-practices.md) — Action file structure
 - [react-best-practices.md](../instructions/references/react-best-practices.md) — component conventions

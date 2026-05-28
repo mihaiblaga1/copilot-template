@@ -14,7 +14,7 @@ A GitHub Copilot workspace template for Next.js App Router projects. Drop this i
 | **Instructions**     | Scoped coding-standard files for API routes, UI components, and Server Actions                                                                            |
 | **Reference guides** | Best-practice references for React, Next.js, Server Actions, API routes, database/Prisma, accessibility, and security                                     |
 | **Safety hooks**     | Pre-tool-use hooks that block destructive commands, secret leaks, `.env` file writes, oversized files, direct DB pushes, and unprotected branch mutations |
-| **GitHub templates** | PR template and issue templates (bug report, feature request)                                                                                             |
+| **GitHub templates** | PR template, issue templates (bug report, feature request), and Dependabot config for automated dependency monitoring                                     |
 
 ---
 
@@ -82,6 +82,7 @@ If you prefer to fill placeholders yourself, edit these files directly:
 │   ├── accessibility-auditor/
 │   ├── api-docs-generator/
 │   ├── i18n-auditor/
+│   ├── linear-ticket-writer/
 │   ├── performance-auditor/
 │   ├── security-auditor/
 │   └── unit-test-writer/
@@ -89,6 +90,7 @@ If you prefer to fill placeholders yourself, edit these files directly:
 │   ├── bug-report.yml
 │   ├── feature-request.yml
 │   └── config.yml
+├── dependabot.yml                  # Automated weekly dependency updates
 ├── copilot-instructions.md         # Root Copilot instructions
 ├── project-description.md          # Product context for all agents/skills
 └── PULL_REQUEST_TEMPLATE.md
@@ -146,6 +148,9 @@ These files ship with the template and should not be edited. They encode battle-
 | **Feature flag patterns**       | Flag evaluation location, client vs. server exposure rules                                                               |
 | **Multi-tenancy / org scoping** | Which field scopes queries (`orgId`, `tenantId`), whether Prisma middleware enforces it                                  |
 | **Third-party integrations**    | Wrapper module locations for Stripe, Resend, S3, etc. so Copilot never calls SDKs directly                               |
+| **Error handling & logging**    | Centralized error reporting service (Sentry, Axiom), logging strategy, `console.error` policy                            |
+| **Toast & notifications**       | Toast library (Sonner), microcopy rules (passive past tense), ConfirmDialog usage                                        |
+| **DTO mapping conventions**     | Where DTO types live, mapping strategy (inline vs. helper), which fields to exclude                                      |
 
 **Example — auth pattern entry:**
 
@@ -227,14 +232,15 @@ Invoke agents from Copilot chat with `@agent <Name>` or via the agent picker.
 
 Skills are invoked automatically when your request matches their trigger phrases.
 
-| Skill                     | Trigger phrases                                                     |
-| ------------------------- | ------------------------------------------------------------------- |
-| **accessibility-auditor** | `a11y audit`, `accessibility review`, `WCAG`, `keyboard navigation` |
-| **api-docs-generator**    | `generate API docs`, `openapi spec`, `document this action`         |
-| **i18n-auditor**          | `i18n audit`, `find hardcoded strings`, `missing translations`      |
-| **performance-auditor**   | `performance review`, `slow feature`, `optimise [feature]`          |
-| **security-auditor**      | `security audit`, `OWASP`, `vulnerability scan`                     |
-| **unit-test-writer**      | `write tests`, `add tests`, `unit test`, `improve coverage`         |
+| Skill                     | Trigger phrases                                                           |
+| ------------------------- | ------------------------------------------------------------------------- |
+| **accessibility-auditor** | `a11y audit`, `accessibility review`, `WCAG`, `keyboard navigation`       |
+| **api-docs-generator**    | `generate API docs`, `openapi spec`, `document this action`               |
+| **i18n-auditor**          | `i18n audit`, `find hardcoded strings`, `missing translations`            |
+| **performance-auditor**   | `performance review`, `slow feature`, `optimise [feature]`                |
+| **security-auditor**      | `security audit`, `OWASP`, `vulnerability scan`                           |
+| **unit-test-writer**      | `write tests`, `add tests`, `unit test`, `improve coverage`               |
+| **linear-ticket-writer**  | _(shared utility — loaded by other skills; can also be invoked directly)_ |
 
 ---
 
@@ -244,6 +250,7 @@ Skills are invoked automatically when your request matches their trigger phrases
 | ------------------------ | -------------------------------------------------------------------------------------------- |
 | **Scaffold Feature**     | `/scaffold-feature <featureName>` — generates the full file tree for a new dashboard feature |
 | **Feature Analysis**     | `/feature-analysis` — analyses an existing feature for issues and improvement opportunities  |
+| **Create Linear Ticket** | `/create-linear-ticket` — interviews you and creates a single structured Linear ticket       |
 | **Write Commit Message** | `/write-commit-message` — generates a conventional commit message from staged changes        |
 
 ---

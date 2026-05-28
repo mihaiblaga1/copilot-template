@@ -39,6 +39,15 @@ Compare the PR's actual description against the template. Flag any of the follow
 - The "How to test" section is missing or has fewer than one concrete step
 - The "Screenshots / recordings" section is absent when the diff contains changes to `.tsx` component files (UI changes require before/after evidence)
 - The self-review checklist is missing entirely
+- The `Closes:` line is empty or has no ticket reference (no `#`, `LIN-`, `PROJ-`, or URL pattern after `Closes:`) — flag as Low with label `PR Description`
+
+After checking the above, if a ticket reference **is** present, optionally validate it:
+
+- Extract the ticket ID (e.g. `PROJ-123` or `#42`).
+- If it matches a Linear pattern (e.g. `[A-Z]+-\d+`), call `mcp_linear_get_issue` with that ID.
+  - If the ticket does **not exist**, flag as Low: "Closes references a ticket that could not be found in Linear."
+  - If the ticket is already in a **completed or cancelled state**, flag as Low: "Closes references a ticket that is already marked {state} in Linear."
+- If the API call fails, skip silently — do not block the review.
 
 Do not flag Low issues for partially completed checklists — only flag when a section is **completely absent** or **clearly unfilled** (still contains the placeholder comment text).
 

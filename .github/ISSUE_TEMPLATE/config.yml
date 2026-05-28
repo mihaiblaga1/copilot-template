@@ -1,5 +1,6 @@
 blank_issues_enabled: false
 contact_links:
   - name: Ask a question / start a discussion
+    # <!-- [GITHUB_DISCUSSIONS_URL] -->
     url: https://github.com/placeholder/placeholder/discussions
     about: Use Discussions for questions, ideas, and open-ended conversations. Reserve Issues for confirmed bugs and actionable feature requests.

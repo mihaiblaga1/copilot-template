@@ -132,31 +132,48 @@ Load and follow the `performance-auditor` skill (`.github/skills/performance-aud
 
 ---
 
-### Step 8 — Fix Performance Issues
+### Step 7b — Security Audit
 
-Read `.perf-audit-<ticket-id>.md` and fix every finding with severity **High** or **Critical** immediately.
+Load and follow the `security-auditor` skill (`.github/skills/security-auditor/SKILL.md`).
+
+**Important override — do NOT create Linear tickets.** Instead:
+
+1. Run the full audit (Steps 0–2 of the skill) on every file touched in Step 5.
+2. Collect all findings using the skill's `FINDING #n` structure.
+3. Append the results to the same audit file:
+   ```
+   .security-audit-<ticket-id>.md
+   ```
+4. Stop before the skill's "Create Linear Tickets" step.
+
+---
+
+### Step 8 — Fix Performance and Security Issues
+
+Read `.perf-audit-<ticket-id>.md` and `.security-audit-<ticket-id>.md` and fix every finding with severity **High** or **Critical** immediately.
 
 For each fix:
 
 - Apply the change using `edit`
-- Add a one-line comment in the file: `// perf: <short description of fix>`
+- Add a one-line comment in the file: `// perf: <short description>` or `// security: <short description>`
 - Mark the finding as resolved in the audit file by prefixing the `FINDING` line with `[FIXED]`
 
 Leave **Medium** and **Low** findings in the audit file with a `[DEFERRED]` prefix — they will be visible in the PR for the reviewer.
 
-After applying all fixes, delete the audit file so it is not committed:
+After applying all fixes, rename both audit files so they are included in the commit for reviewers:
 
 ```bash
-Rename the file to: .perf-audit-<ticket-id>-resolved.md
+Rename: .perf-audit-<ticket-id>.md → .perf-audit-<ticket-id>-resolved.md
+Rename: .security-audit-<ticket-id>.md → .security-audit-<ticket-id>-resolved.md
 ```
 
-Include the resolved audit file in the commit so reviewers can see what was found and fixed.
+Include both resolved audit files in the commit so reviewers can see what was found and fixed.
 
 ---
 
 ### Step 9 — Commit the Work
 
-Stage and commit all changes (implementation + tests + performance fixes + resolved audit file):
+Stage and commit all changes (implementation + tests + performance/security fixes + resolved audit files):
 
 ```bash
 git add -A
@@ -220,7 +237,8 @@ git push -u origin <branch-name>
    - [ ] Loading, empty, and error states handled
    - [ ] Unit tests written and passing
    - [ ] Performance audit run — all High/Critical findings fixed
-   - [ ] Resolved audit file (`*.perf-audit-*-resolved.md`) included for reviewer
+   - [ ] Security audit run — all High/Critical findings fixed
+   - [ ] Resolved audit files (`*.perf-audit-*-resolved.md`, `*.security-audit-*-resolved.md`) included for reviewer
    ```
 
 3. Open the PR targeting `main`:

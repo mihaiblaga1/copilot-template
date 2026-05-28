@@ -96,11 +96,13 @@ Include footers for:
 
 1. Read the full staged diff.
 2. Identify all changed files and group them by logical area.
-3. Determine whether this is one coherent change or multiple unrelated changes:
+3. **Detect a ticket ID from the current branch name:**
+   Run `git branch --show-current` and inspect the output. If the branch name contains a ticket ID pattern (e.g. `feat/proj-123-...`, `fix/lin-456-...`, `chore/abc-789-...`), extract the ID (e.g. `PROJ-123`, `LIN-456`, `ABC-789`) and include it as a `Closes` footer automatically. Do not ask the user — just include it.
+4. Determine whether this is one coherent change or multiple unrelated changes:
    - **One coherent change** → produce one commit message.
    - **Multiple unrelated changes** → warn the user and produce a separate proposed message for each logical group, then recommend splitting the commit with `git add -p`.
-4. Apply all rules above to produce the message(s).
-5. Output the result in a fenced code block so it is easy to copy.
+5. Apply all rules above to produce the message(s).
+6. Output the result in a fenced code block so it is easy to copy.
 
 ---
 

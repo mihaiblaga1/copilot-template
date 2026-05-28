@@ -144,19 +144,33 @@ DATABASE_URL=
 
 Before writing or reviewing code, load the relevant reference file(s) for the area you are working in. Each file contains concrete rules, patterns, and examples.
 
-| Area                         | Reference                                                                                                  |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Project description**      | [project-description.md](./project-description.md)                                                         |
-| React components & hooks     | [react-best-practices.md](./instructions/references/react-best-practices.md)                               |
-| Next.js App Router & routing | [nextjs-best-practices.md](./instructions/references/nextjs-best-practices.md)                             |
-| Server Actions               | [server-actions-best-practices.md](./instructions/references/server-actions-best-practices.md)             |
-| API Route Handlers           | [api-route-best-practices.md](./instructions/references/api-route-best-practices.md)                       |
-| Database & Prisma            | [db-best-practices.md](./instructions/references/db-best-practices.md)                                     |
-| Accessibility (WCAG 2.1 AA)  | [accessibility-best-practices.md](./instructions/references/accessibility-best-practices.md)               |
-| Security (OWASP / headers)   | [security-best-practices.md](./instructions/references/security-best-practices.md)                         |
-| Project-specific patterns    | [project-patterns.md](./instructions/references/project-patterns.md)                                       |
+| Area                         | Reference                                                                                      |
+| ---------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Project description**      | [project-description.md](./project-description.md)                                             |
+| React components & hooks     | [react-best-practices.md](./instructions/references/react-best-practices.md)                   |
+| Next.js App Router & routing | [nextjs-best-practices.md](./instructions/references/nextjs-best-practices.md)                 |
+| Server Actions               | [server-actions-best-practices.md](./instructions/references/server-actions-best-practices.md) |
+| API Route Handlers           | [api-route-best-practices.md](./instructions/references/api-route-best-practices.md)           |
+| Database & Prisma            | [db-best-practices.md](./instructions/references/db-best-practices.md)                         |
+| Accessibility (WCAG 2.1 AA)  | [accessibility-best-practices.md](./instructions/references/accessibility-best-practices.md)   |
+| Security (OWASP / headers)   | [security-best-practices.md](./instructions/references/security-best-practices.md)             |
+| Project-specific patterns    | [project-patterns.md](./instructions/references/project-patterns.md)                           |
 
 Always load **project-description.md** first — it provides product context and domain knowledge that informs every decision. Always load **project-patterns.md** for any feature work — it contains project-specific conventions that override the generic references above.
+
+## Available Skills
+
+Skills are reusable audit and generation workflows in `.github/skills/`. Copilot invokes them automatically when the user's request matches the trigger phrases, or they can be loaded manually by other skills and agents.
+
+| Skill                   | Trigger phrases                                                            | What it does                                                                  |
+| ----------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `accessibility-auditor` | a11y audit, accessibility review, WCAG, screen reader, keyboard navigation | Audits a feature for WCAG 2.1 AA violations and creates Linear tickets        |
+| `api-docs-generator`    | generate API docs, openapi spec, swagger, tsdoc, document this action      | Generates OpenAPI 3.1 specs and TSDoc comments for Route Handlers and Actions |
+| `i18n-auditor`          | i18n audit, find hardcoded strings, missing translations, localization     | Scans for hardcoded user-visible strings and creates Linear tickets           |
+| `linear-ticket-writer`  | _(shared utility — loaded by other skills, not invoked directly)_          | Provides canonical Linear ticket format used by all auditors                  |
+| `performance-auditor`   | performance audit, slow feature, optimise, find performance issues         | Audits for performance anti-patterns and creates Linear tickets               |
+| `security-auditor`      | security audit, OWASP, vulnerability scan, check for security issues       | Scans for OWASP Top 10 violations and creates Linear tickets                  |
+| `unit-test-writer`      | write tests, add tests, unit test, test this file, improve coverage        | Generates unit tests following project conventions                            |
 
 ## Copilot Behavior Notes
 

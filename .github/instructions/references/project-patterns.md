@@ -84,3 +84,38 @@
 ## 8. Other Project-specific Rules
 
 <!-- Add any additional conventions that don't fit the sections above. -->
+
+---
+
+## 9. Error Handling & Logging
+
+<!-- [ERROR_HANDLING]: Document the centralized error-handling and logging strategy.
+     Examples:
+     - All Server Actions catch errors and return `{ success: false, error: "..." }` — never throw to the client.
+     - Errors are reported to Sentry via `captureException(err)` from `src/lib/error-reporting.ts`.
+     - `console.error` is only used in development — production uses the centralized logger.
+-->
+
+---
+
+## 10. Toast & Notification Conventions
+
+<!-- [TOAST_CONVENTIONS]: Document how user-facing notifications are handled.
+     Examples:
+     - Use Sonner toasts exclusively — never `alert()` or `window.confirm()`.
+     - Success toasts use passive past tense: "Alert Created", "Changes Saved".
+     - Error toasts are specific: "Failed to create alert: validation error" — never "Something went wrong".
+     - Confirmation dialogs use `<ConfirmDialog />` for all destructive actions.
+-->
+
+---
+
+## 11. DTO Mapping Conventions
+
+<!-- [DTO_CONVENTIONS]: Document how raw database models are mapped to client-safe types.
+     Examples:
+     - Never return raw Prisma models to the client — always map to a `*DTO` type.
+     - DTO types live in `src/types/<domain>.ts` alongside Zod schemas.
+     - Mapping functions are inline in the Server Action — no separate mapper files unless the mapping is complex.
+     - Sensitive fields (passwordHash, tokens, internal IDs) must never appear in DTOs.
+-->

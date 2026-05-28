@@ -17,7 +17,7 @@
 <!-- What does this PR do? Link the problem it solves, not just the solution.
      If this closes a Linear ticket or GitHub issue, use "Closes #123" or "Fixes LIN-456". -->
 
-Closes <!-- issue/ticket reference -->
+Closes:
 
 ---
 
