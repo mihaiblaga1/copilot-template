@@ -128,6 +128,29 @@ Ask **all of the following in one message**. Wait for all answers before proceed
 
 ---
 
+### Step 4b — Phase 3b Interview: Integration Tool Settings
+
+Ask **all of the following in one message**. Wait for all answers before proceeding.
+
+```
+20. What is your Linear team name?
+    (If unsure, we will call mcp_linear_list_teams during setup.)
+
+21. What is your Linear team ID?
+    (Found in Linear → Settings → Team. Looks like a UUID or short alphanumeric string.)
+
+22. What is your Linear org / workspace slug?
+    (Found in your Linear URL: linear.app/{slug}/...)
+
+23. What is your GitHub org/owner name and repository name?
+    (e.g. org = "acme-corp", repo = "my-app")
+    If not using GitHub, write "N/A".
+```
+
+If the developer does not know their Linear team ID, call `mcp_linear_list_teams`, print the result, and ask them to confirm the correct team from the list before recording any value.
+
+---
+
 ### Step 5 — Phase 4 Interview: Environment Variables
 
 Based on the providers the developer named in Phase 2, ask for the exact environment variable names.
@@ -173,6 +196,24 @@ Rules:
 - Leave the Links section for the developer to fill — add a `<!-- TODO: add URLs -->` comment.
 
 After writing the file, print a brief summary of what was filled.
+
+---
+
+### Step 6b — Fill `integrations.md`
+
+Open `instructions/references/integrations.md` and replace every placeholder with the answers from Step 4b:
+
+| Placeholder          | Replace with                                                |
+| -------------------- | ----------------------------------------------------------- |
+| `[LINEAR_TEAM_NAME]` | Q20 answer                                                  |
+| `[LINEAR_TEAM_ID]`   | Q21 answer (confirmed via mcp_linear_list_teams if unknown) |
+| `[LINEAR_ORG_SLUG]`  | Q22 answer                                                  |
+| `[GITHUB_ORG]`       | Q23 org/owner name (or "N/A")                               |
+| `[GITHUB_REPO]`      | Q23 repo name (or "N/A")                                    |
+
+Leave the `main` default branch value unchanged unless the developer specifies a different default branch.
+
+After writing, confirm to the developer: _"Integration settings saved. Agents will now use these IDs directly — no runtime team discovery."_
 
 ---
 

@@ -155,6 +155,7 @@ Before writing or reviewing code, load the relevant reference file(s) for the ar
 | Accessibility (WCAG 2.1 AA)  | [accessibility-best-practices.md](./instructions/references/accessibility-best-practices.md)   |
 | Security (OWASP / headers)   | [security-best-practices.md](./instructions/references/security-best-practices.md)             |
 | Project-specific patterns    | [project-patterns.md](./instructions/references/project-patterns.md)                           |
+| Integration settings         | [integrations.md](./instructions/references/integrations.md)                                   |
 
 Always load **project-description.md** first — it provides product context and domain knowledge that informs every decision. Always load **project-patterns.md** for any feature work — it contains project-specific conventions that override the generic references above.
 
